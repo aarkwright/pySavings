@@ -139,3 +139,4 @@ cython_debug/
 
 # VSCode Workspace
 workspace.code-workspace
+.vscode/settings.json
