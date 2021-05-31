@@ -10,14 +10,8 @@ import time
 import multiprocessing as mp
 
 # GLOBALS
-THREADS_MAX = int(mp.cpu_count())
+THREADS_MAX = int(mp.cpu_count()) - 1
 
-
-# script_path = os.path.dirname(os.path.realpath(__file__))
-
-
-# df = pd.DataFrame(yf.Ticker('MSFT').dividends.reset_index())
-# df.to_feather(path="{}\\test.ftr".format(script_path))
 
 ### parquet vs feather
 # https://wesmckinney.com/blog/python-parquet-multithreading/
@@ -75,16 +69,16 @@ class Savings:
             _download(index, symbol, save_path)
 
     def _download_symbol_data_mp(self):
-        pool = mp.Pool(processes=int(THREADS_MAX - 1))
+        pool = mp.Pool(processes=int(THREADS_MAX))
         pool.map(self._download_symbol_data, self.symbols['stocks'])
         pool.close()
 
-
     def _load_symbol_data(self):
-        """Load symbol data from feather files"""
+        """Load symbol data from parquet files"""
         return False
 
 
 if __name__ == "__main__":
     s = Savings()
-    data = s._download_symbol_data_mp()
+    s._download_symbol_data_mp()
+    print("debug")
